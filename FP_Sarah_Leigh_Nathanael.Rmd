@@ -9,21 +9,103 @@ output: html_notebook
 
 Insert introduction here.
 
-# First Question
+```{r setUp}
+# Load needed packages
+library(ggplot2)
+library(readxl)
 
-Insert data source information, visualization, and write-up here.
+```
+
+
+```{r loadData}
+# Load dataset 1 from Excel - PSU student alcohol consumptions
+alcohol_consumption <- read_excel("PSU_students_report_consuming_alc.xlsx")
+
+# Load dataset 2 from Excel - PSU student high risk drinking by sex
+hr_drinking_sex <- read_excel("PSU_high_risk_drinking_sex.xlsx")
+
+# Load dataset 3 from Excel - PSU student drinking consequences
+drinking_consequences <- read_excel("PSU_drinking_consequences.xlsx")
+```
+
+
+# First Question
+```{r alcoholConsumption}
+# Create ggplot2 for PSU student alcohol consumption over time
+# One line/trend for respondents who do drink
+# One line/trend for respondents who do not drink
+alc_consump_colors <- c("Drinker" = "red", "Non-Drinker" = "gray")
+
+ggplot(
+  data = alcohol_consumption, 
+  aes(x = year)
+) + 
+  geom_point(aes(y = drink_num, color = "Drinker"), size = 2.25) +
+  geom_point(aes(y = not_drink_num, color = "Non-Drinker"), size = 2.25) +
+  
+  geom_line(aes(y = drink_num, color = "Drinker"), size = 1) + 
+  geom_line(aes(y = not_drink_num, color = "Non-Drinker"), size = 1) +
+  labs(x = "Year", y = "Respondents", color = "Drinker Status") +
+  ggtitle("Penn State Student Alcohol Consumption Over Time") +
+  scale_color_manual(values = alc_consump_colors) +
+  theme_minimal()
+
+```
+
+
+Insert data source information and write-up here.
 
 # Second Question
+```{r highriskDrinking}
+# Creates grouped bar chart for PSU high risk drinking by sex over time
+# One color bar (blue) for male respondents
+# One color bar (pink) for female respondents
+ggplot(
+  data = hr_drinking_sex, 
+  aes(x = year,
+      y = frequency,
+      fill = sex)) +
+  geom_bar(stat = "identity", position = 'dodge') +
+  ggtitle("Penn State Student High Risk Drinking By Sex Over Time") +
+  labs(x = "Year", y = "Respondents", fill = "Sex") +
+  scale_fill_manual(values = c("pink", "blue")) +
+  theme_minimal()
 
-Insert data source information, visualization, and write-up here.
+```
+
+Insert data source information and write-up here.
 
 # Third Question
+```{r drinkingConsequences}
+# Create ggplot2 for drinking consequences over time
+# One line for "Had sex when you didn’t really want to"
+# One line for "Been pressured or forced to have sex with someone and were too drunk to prevent it"
+# One line for "Pressured or forced someone to have sex with you after you had been drinking"
+consequence_colors <- c("did not want to" = "dark green", 
+                                 "were pressured when too drunk" = "purple",
+                                 "were pressured after drinking" = "orange")
+ggplot(
+  data = drinking_consequences, 
+  aes(x = year)
+) + 
+  geom_point(aes(y = sex_did_not_want, color = "did not want to"), size = 2.25) +
+  geom_point(aes(y = pressured_forced_drunk, color = "were pressured when too drunk"), size = 2.25) +
+  geom_point(aes(y = pressured_forced_after_drinking, color = "were pressured after drinking"), size = 2.25) +
+  
+  geom_line(aes(y = sex_did_not_want, color = "did not want to"), size = 1) + 
+  geom_line(aes(y = pressured_forced_drunk, color = "were pressured when too drunk"), size = 1) +
+  geom_line(aes(y = pressured_forced_after_drinking, color = "were pressured after drinking"), size = 1) +
+  labs(x = "Year", y = "Percentage of Respondents", color = "Respondent had sex when they...") +
+  ggtitle("Penn State Student Drinking Consequence Responses Over Time") +
+  scale_color_manual(values = consequence_colors) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_x_continuous(breaks = c(2010, 2012, 2014, 2016, 2018, 2020)) +
+  theme_minimal()
 
-Insert data source information, visualization, and write-up here.
+```
 
-# Insert next section here
+Insert data source information and write-up here.
 
-Insert next section text here.
 
 
 
