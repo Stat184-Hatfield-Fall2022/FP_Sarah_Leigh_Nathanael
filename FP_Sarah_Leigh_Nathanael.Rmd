@@ -20,7 +20,21 @@ Insert population plots and analysis here.
 
 # University Park Cases
 
-Explain Penn State PULSE survey here.
+## Penn State PULSE Survey
+Alcohol consumption, high-risk drinking, and the consequences related to drinking behaviors at Penn State are major issues. In order to get an accurate representation of alcohol data from Penn State students, we chose to investigate public data from the Penn State PULSE survey. 
+
+The Penn State PULSE survey began administration in 1995, and it covers a wide range of topics, including the arts, sustainability, drinking, communications, diversity and inclusion, food and housing, and new students. The survey is administered by the Student Affairs Research and Assessment (SARA) about two to four times a year. The PULSE surveys help Penn State administrators understand the concerns, needs, and experiences of students over different topics.
+
+Currently, the PULSE surveys are sent via email to a random sample of Penn State students. Occasionally, a specific population is chosen depending on the topic of the survey, and then a random sample is pulled from the specific population. The survey response rates vary from teens to low twenties due to the survey topic. For each survey, the student characteristics of respondents are compared to the population characteristics in order to determine if the sample appropriately represents the population.
+
+## Drinking PULSE Survey and Data
+The Drinking PULSE Survey is used to obtain information on Penn State students’ alcohol consumption, high-risk drinking behaviors, and consequences of alcohol use on different aspects of their lives as college students. In our report, we will focus on the alcohol consumption of Penn State students, the difference in high-risk drinking behaviors between the sexes, and the sexual consequences of drinking behaviors over time. 
+
+For the Drinking PULSE Survey data, it is important to note that the surveys have only been administered online since 2009. Before 2009, surveys were conducted by phone or online at the request of the University Health Services. This could have affected the number of survey respondents over time. 
+
+Before visualizing the data, it was necessary to observe the structure of the data provided by the Penn State Drinking PULSE Survey. First, we found that the Drinking PULSE Survey is not conducted consistently, which is noticeable in the bar graph of high-risk drinking behaviors by sex over time. Since 2011, it has been conducted every other year. 
+
+In addition to this, we discovered that Penn State’s reports of this drinking data are misleading. For the alcohol consumption and high-risk drinking behaviors by sex data sets, the data is structured with time increasing from left to right, since the percentages decrease over time. We believed that this structure would have continued throughout the Drinking PULSE Survey report, but this is not the case. For the consequences of drinking behaviors data, the percentages in most categories increase over time, so the data is arranged from the most recent collection (2019) to the oldest collection (2010), which makes the data appear to be decreasing over time rather than increasing. Because of the inconsistencies between the data sets, Penn State’s report of the Drinking PULSE survey data is misleading.
 
 ```{r alcData}
 # Load dataset 1 from Excel - PSU student alcohol consumptions
@@ -33,7 +47,7 @@ hr_drinking_sex <- read_excel("PSU_high_risk_drinking_sex.xlsx")
 drinking_consequences <- read_excel("PSU_drinking_consequences.xlsx")
 ```
 
-## Question
+### How has the number of Penn State students who report consuming any alcohol changed over time?
 ```{r alcoholConsumption}
 # Create ggplot2 for PSU student alcohol consumption over time
 # One line/trend for respondents who do drink
@@ -57,7 +71,7 @@ ggplot(
 ```
 Analyze plot here.
 
-## Second Question
+### How does high risk drinking vary over time by sex?
 ```{r highriskDrinking}
 # Creates grouped bar chart for PSU high risk drinking by sex over time
 # One color bar (blue) for male respondents
@@ -77,7 +91,7 @@ ggplot(
 
 Analyze plot here.
 
-## Third Question
+### How do the effects of alcohol impact experiences with sexual assault over time?
 ```{r drinkingConsequences}
 # Create ggplot2 for drinking consequences over time
 # One line for "Had sex when you didn’t really want to"
