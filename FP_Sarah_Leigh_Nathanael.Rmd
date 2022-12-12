@@ -6,7 +6,6 @@ output: html_notebook
 ---
 
 # Introduction
-
 Insert introduction here.
 
 ```{r setUp}
@@ -16,8 +15,14 @@ library(readxl)
 
 ```
 
+# Population Analysis
+Insert population plots and analysis here.
 
-```{r loadData}
+# University Park Cases
+
+Explain Penn State PULSE survey here.
+
+```{r alcData}
 # Load dataset 1 from Excel - PSU student alcohol consumptions
 alcohol_consumption <- read_excel("PSU_students_report_consuming_alc.xlsx")
 
@@ -28,8 +33,7 @@ hr_drinking_sex <- read_excel("PSU_high_risk_drinking_sex.xlsx")
 drinking_consequences <- read_excel("PSU_drinking_consequences.xlsx")
 ```
 
-
-# First Question
+## Question
 ```{r alcoholConsumption}
 # Create ggplot2 for PSU student alcohol consumption over time
 # One line/trend for respondents who do drink
@@ -51,11 +55,9 @@ ggplot(
   theme_minimal()
 
 ```
+Analyze plot here.
 
-
-Insert data source information and write-up here.
-
-# Second Question
+## Second Question
 ```{r highriskDrinking}
 # Creates grouped bar chart for PSU high risk drinking by sex over time
 # One color bar (blue) for male respondents
@@ -73,9 +75,9 @@ ggplot(
 
 ```
 
-Insert data source information and write-up here.
+Analyze plot here.
 
-# Third Question
+## Third Question
 ```{r drinkingConsequences}
 # Create ggplot2 for drinking consequences over time
 # One line for "Had sex when you didn’t really want to"
@@ -104,8 +106,16 @@ ggplot(
 
 ```
 
-Insert data source information and write-up here.
+Analyze plot here.
 
+# Branch Campus Cases
+Insert table and branch campus information here.
+
+# Synthesis
+Insert synthesis here.
+
+# Conclusion
+Insert conclusion here.
 
 
 
