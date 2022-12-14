@@ -207,6 +207,28 @@ cleryTableOffUP %>%
     font_size = 14
   )
 ```
+```{r branchCampusOn, echo = TRUE}
+CleryDataOtherCampuses <- read_excel("~/CleryDataOtherCampuses.xlsx")
+
+cleryTableBranchOn <- CleryDataOtherCampuses %>%
+  filter(Location == "On-Campus Property") %>% 
+  tabyl(Type, Year) %>% 
+  adorn_totals(where = c("row", "col")) %>% 
+  adorn_title(
+    placement = "combined",
+    row_name = "Type",
+    col_name = "Year"
+  )
+
+cleryTableBranchOn %>% 
+  kable(
+    caption = "Branch Campuses Sexual Offences"
+  ) %>% 
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped"),
+    font_size = 14
+  )
+```
 
 
 # Synthesis
