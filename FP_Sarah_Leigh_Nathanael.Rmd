@@ -58,11 +58,15 @@ ggplot(
   data = alcohol_consumption, 
   aes(x = year)
 ) + 
+# Create points on each line
   geom_point(aes(y = drink_num, color = "Drinker"), size = 2.25) +
   geom_point(aes(y = not_drink_num, color = "Non-Drinker"), size = 2.25) +
   
+ # Create one line for each drinker status
   geom_line(aes(y = drink_num, color = "Drinker"), size = 1) + 
   geom_line(aes(y = not_drink_num, color = "Non-Drinker"), size = 1) +
+  
+  # Add axis labels, title, and colors
   labs(x = "Year", y = "Respondents", color = "Drinker Status") +
   ggtitle("Penn State Student Alcohol Consumption Over Time") +
   scale_color_manual(values = alc_consump_colors) +
@@ -81,14 +85,19 @@ While the drinker trend line really changes over time from 2002 to 2019, the non
 # A pair of bars for each survey collection year
 # Blue bars for male respondents
 # Pink bars for female respondents
+
 ggplot(
   data = hr_drinking_sex, 
   aes(x = year,
       y = frequency,
       fill = sex)) +
+      
+ # Set the position of the bars
   geom_bar(stat = "identity", position = 'dodge') +
-  ggtitle("Penn State Student High Risk Drinking By Sex Over Time") +
+  
+ # Add a title, axis labels, and colors
   labs(x = "Year", y = "Respondents", fill = "Sex") +
+  ggtitle("Penn State Student High Risk Drinking By Sex Over Time") +
   scale_fill_manual(values = c("pink", "blue")) +
   theme_minimal()
 
@@ -111,16 +120,23 @@ ggplot(
   data = drinking_consequences, 
   aes(x = year)
 ) + 
+
+# Create points on each line
   geom_point(aes(y = sex_did_not_want, color = "did not want to"), size = 2.25) +
   geom_point(aes(y = pressured_forced_drunk, color = "were pressured when too drunk"), size = 2.25) +
   geom_point(aes(y = pressured_forced_after_drinking, color = "were pressured after drinking"), size = 2.25) +
   
+# Create three lines - one for each sexual assault consequence
   geom_line(aes(y = sex_did_not_want, color = "did not want to"), size = 1) + 
   geom_line(aes(y = pressured_forced_drunk, color = "were pressured when too drunk"), size = 1) +
   geom_line(aes(y = pressured_forced_after_drinking, color = "were pressured after drinking"), size = 1) +
+  
+# Add axis labels, title, and colors
   labs(x = "Year", y = "Percentage of Respondents", color = "Respondent had sex when they...") +
   ggtitle("Penn State Student Drinking Consequence Responses Over Time") +
   scale_color_manual(values = consequence_colors) +
+  
+# Add percent signs to y-axis labels and set manual breaks in x-axis
   scale_y_continuous(labels = scales::percent) +
   scale_x_continuous(breaks = c(2010, 2012, 2014, 2016, 2018, 2020)) +
   theme_minimal()
