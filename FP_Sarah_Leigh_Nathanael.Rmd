@@ -319,7 +319,11 @@ cleryTableBranchOn %>%
   kableExtra::column_spec(1:6, color = "black") %>% 
   kableExtra::row_spec(1:3, color = "black")
 ```
+Each of these tables show the trends of sexual assaults over time as well as well as highlighting the differences between the rate at which these incidents occur on- and off-campus. 
 
+For example, in comparing the two tables related University Park, it becomes abundantly clear that the number of sexual assault incidents is significantly lower off-campus. This trend suggests most environments where these events occur tend to be on-campus, likely in areas such as dorm halls. The one outlier from that data set appears to be in the year 2019, when the number of sexual assault incidents jumped to 48 -- significantly higher than in any of the years before or after that. 
+
+It is also worth paying attention to the comparatively low numbers of sexual assault incidences on branch campuses. Because these values are so small, the team decided to aggregate the data from Penn State's three largest branch campuses: Abington, Erie, and Harrisburg. Even put together as they are, the frequency of these incidences does not compare with the number of reports for either on- or off-campus at University Park. 
 
 # Synthesis
 Insert synthesis here.
