@@ -695,6 +695,8 @@ alcohol changed over time?</li>
 sex?</li>
 <li>How do the effects of alcohol impact Penn State student experiences
 with sexual assault over time?</li>
+<li>How do sexual assault trends differ at branch campus from main
+campus?</li>
 </ol>
 </div>
 <div id="data-background" class="section level1">
@@ -1031,10 +1033,22 @@ students increasing since 2019, could both of these increases be
 related?</p>
 </div>
 </div>
-<div id="branch-campus-cases" class="section level1">
-<h1>Branch Campus Cases</h1>
+<div id="campus-sexual-assault-cases" class="section level1">
+<h1>Campus Sexual Assault Cases</h1>
+<p>This data was pulled from Clery statistics published yearly by Penn
+State.The goal was to better understand the incidence of sexual assaults
+(i.e. rape and fondling reports) on the University Park campus as
+compared to the aggregated data for Penn State’s largest branch campuses
+(Abington, Erie, and Harrisburg).</p>
+<p>The data has been grouped by report type and year, with each table
+representing events that either happened on or off campus properties.
+Please note that there were no reported fondling incidents for any of
+the years at any of the branch campuses, so there is no table for that
+data.</p>
 <pre class="r"><code>CleryData3 &lt;- read_excel(&quot;~/Documents/GitHub/FP_Sarah_Leigh_Nathanael/data/CleryData3.xlsx&quot;)
+#Loading the data we have pulled from Penn State&#39;s campus Clery reports. This particular Excel summarizes the data from all On- and Off-Campus rape and fondling incidences reported from 2017-2021 at University Park.
 
+#Creating a table of all On-Campus sexual assault incidences from 2017-2021 and finding the totals for each type of incidence and the years. 
 cleryTable2017 &lt;- CleryData3 %&gt;%
   filter(Location == &quot;On-Campus Property&quot;) %&gt;% 
   tabyl(Type, Year) %&gt;% 
@@ -1045,6 +1059,8 @@ cleryTable2017 &lt;- CleryData3 %&gt;%
     col_name = &quot;Year&quot;
   )
 
+#Cleaning the table
+
 cleryTable2017 %&gt;% 
   kable(
     caption = &quot;On-Campus UP Property Sexual Offences&quot;
@@ -1052,7 +1068,9 @@ cleryTable2017 %&gt;%
   kableExtra::kable_styling(
     bootstrap_options = c(&quot;striped&quot;),
     font_size = 14
-  )</code></pre>
+  ) %&gt;% 
+  kableExtra::column_spec(1:6, color = &quot;black&quot;) %&gt;% 
+  kableExtra::row_spec(1:3, color = &quot;black&quot;)</code></pre>
 <table class="table table-striped" style="font-size: 14px; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
 On-Campus UP Property Sexual Offences
@@ -1084,78 +1102,80 @@ Total
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;color: black !important;color: black !important;">
 Fondling
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 20
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 27
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 24
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 13
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 22
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;">
 106
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;color: black !important;color: black !important;">
 Rape
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 37
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 49
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 41
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 28
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 41
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;">
 196
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;color: black !important;color: black !important;">
 Total
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 57
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 76
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 65
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 41
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 63
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;">
 302
 </td>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>CleryData3 &lt;- read_excel(&quot;~/Documents/GitHub/FP_Sarah_Leigh_Nathanael/data/CleryData3.xlsx&quot;)
+<pre class="r"><code>#Loading the data we have pulled from Penn State&#39;s campus Clery reports. This particular Excel summarizes the data from all On- and Off-Campus rape and fondling incidences reported from 2017-2021 at University Park.
+CleryData3 &lt;- read_excel(&quot;~/Documents/GitHub/FP_Sarah_Leigh_Nathanael/data/CleryData3.xlsx&quot;)
 
+#Creating a table of all Off-Campus sexual assault incidences from 2017-2021 and finding the totals for each type of incidence and the years.
 cleryTableOffUP &lt;- CleryData3 %&gt;%
   filter(Location == &quot;Non Campus&quot;) %&gt;% 
   tabyl(Type, Year) %&gt;% 
@@ -1166,6 +1186,8 @@ cleryTableOffUP &lt;- CleryData3 %&gt;%
     col_name = &quot;Year&quot;
   )
 
+#Cleaning the table
+
 cleryTableOffUP %&gt;% 
   kable(
     caption = &quot;Off UP Campus Sexual Offences&quot;
@@ -1173,7 +1195,9 @@ cleryTableOffUP %&gt;%
   kableExtra::kable_styling(
     bootstrap_options = c(&quot;striped&quot;),
     font_size = 14
-  )</code></pre>
+  ) %&gt;% 
+  kableExtra::column_spec(1:6, color = &quot;black&quot;) %&gt;% 
+  kableExtra::row_spec(1:3, color = &quot;black&quot;)</code></pre>
 <table class="table table-striped" style="font-size: 14px; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
 Off UP Campus Sexual Offences
@@ -1205,77 +1229,81 @@ Total
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;color: black !important;color: black !important;">
 Fondling
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 1
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 6
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 19
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 0
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 5
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;">
 31
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;color: black !important;color: black !important;">
 Rape
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 16
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 20
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 29
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 10
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 7
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;">
 82
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;color: black !important;color: black !important;">
 Total
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 17
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 26
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 48
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 10
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 12
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;">
 113
 </td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>CleryDataOtherCampuses &lt;- read_excel(&quot;~/Documents/GitHub/FP_Sarah_Leigh_Nathanael/data/CleryDataOtherCampuses.xlsx&quot;)
+#Loading the data we have pulled from Penn State&#39;s campus Clery reports. This particular Excel summarizes the data from all On- and Off-Campus rape and fondling incidences reported from 2017-2021 at the Abington, Erie, and Harrisburg campuses. 
+#Incidences at all of these campuses are aggregated per year.
+
+#Creating a table of all Off-Campus sexual assault incidences from 2017-2021 and finding the totals for each type of incidence and the years.
 
 cleryTableBranchOn &lt;- CleryDataOtherCampuses %&gt;%
   filter(Location == &quot;On-Campus Property&quot;) %&gt;% 
@@ -1286,6 +1314,8 @@ cleryTableBranchOn &lt;- CleryDataOtherCampuses %&gt;%
     row_name = &quot;Type&quot;,
     col_name = &quot;Year&quot;
   )
+  
+#Cleaning the table
 
 cleryTableBranchOn %&gt;% 
   kable(
@@ -1294,7 +1324,9 @@ cleryTableBranchOn %&gt;%
   kableExtra::kable_styling(
     bootstrap_options = c(&quot;striped&quot;),
     font_size = 14
-  )</code></pre>
+  ) %&gt;% 
+  kableExtra::column_spec(1:5, color = &quot;black&quot;) %&gt;% 
+  kableExtra::row_spec(1:3, color = &quot;black&quot;)</code></pre>
 <table class="table table-striped" style="font-size: 14px; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
 Branch Campuses Sexual Offences
@@ -1320,62 +1352,93 @@ Total
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;color: black !important;color: black !important;">
 Fondling
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 3
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 0
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 2
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 5
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;color: black !important;color: black !important;">
 Rape
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 4
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 10
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 4
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 18
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;color: black !important;color: black !important;">
 Total
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 7
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 10
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 6
 </td>
-<td style="text-align:right;">
+<td style="text-align:right;color: black !important;color: black !important;">
 23
 </td>
 </tr>
 </tbody>
 </table>
+<p>Each of these tables show the trends of sexual assaults over time as
+well as well as highlighting the differences between the rate at which
+these incidents occur on- and off-campus.</p>
+<p>For example, in comparing the two tables related University Park, it
+becomes abundantly clear that the number of sexual assault incidents is
+significantly lower off-campus. This trend suggests most environments
+where these events occur tend to be on-campus, likely in areas such as
+dorm halls. The one outlier from that data set appears to be in the year
+2019, when the number of sexual assault incidents jumped to 48 –
+significantly higher than in any of the years before or after that.</p>
+<p>It is also worth paying attention to the comparatively low numbers of
+sexual assault incidences on branch campuses. Because these values are
+so small, the team decided to aggregate the data from Penn State’s three
+largest branch campuses: Abington, Erie, and Harrisburg. Even put
+together as they are, the frequency of these incidences does not compare
+with the number of reports for either on- or off-campus at University
+Park.</p>
 </div>
 <div id="conclusion" class="section level1">
 <h1>Conclusion</h1>
-<p>Insert conclusion here.</p>
+<p>Having presented our exploratory data analysis, we can see that, when
+a greater percentage of PULSE poll respondents said they consumed
+alcohol in the given time period, there was a greater number of reported
+sexual assaults. This, purportedly affirms the established connection
+between alcohol and assault that was originally postulated. <br>
+<br></p>
+<p>However, just because those two things are correlated, that does not
+imply that it was merely more people drinking that was the problem. An
+additional explanation for this pattern is that there were more students
+enrolled at the times in which sexual assault was reported more. This is
+particularly evident in the data tables. When there is an increase in
+the enrollment body at University Park, there is an increase in the
+number of reported sexual assaults. It’s not perfectly true, but the
+pattern does exist and thus is likely part of the explanation for what
+variables affect the rate of sexual assault at Penn State.</p>
 </div>
 
 
