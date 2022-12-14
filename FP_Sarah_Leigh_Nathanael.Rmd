@@ -211,7 +211,6 @@ This plot addresses the question "how do the effects of alcohol impact Penn Stat
 There is a slight increase in the percentage of respondents (from three to five percent) that were drunk and pressured into having sex from 2010 to 2019. There is fluctuation in the percentage of respondents (between one and two percent) that were pressured into having sex after drinking between 2010 and 2019. The percentage of respondents that sex when they did not want to is significantly larger compared to the other two drinking consequences. In addition to this, from 2013 to 2019, the percentage of respondents in this category of had sex when they did not want to continues to increase. With alcohol consumption of Penn State students increasing since 2019, could both of these increases be related?
 
 # Campus Sexual Assault Cases
-Insert table and branch campus information here.
 
 This data was pulled from Clery statistics published yearly by Penn State.The goal was to better understand the incidence of sexual assaults (i.e. rape and fondling reports) on the University Park campus as compared to the aggregated data for Penn State's largest branch campuses (Abington, Erie, and Harrisburg). 
 
