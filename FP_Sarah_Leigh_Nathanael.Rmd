@@ -151,6 +151,64 @@ There is a slight increase in the percentage of respondents (from three to five 
 # Branch Campus Cases
 Insert table and branch campus information here.
 
+
+```{r packageSetup, include = TRUE, echo=TRUE}
+#Calling all packages needed to create tables of our data
+
+library(dplyr)
+library(janitor)
+library(knitr)
+library(readxl)
+
+```
+
+```{r UPCampusOn, echo = TRUE}
+CleryData3 <- read_excel("~/CleryData3.xlsx")
+
+cleryTable2017 <- CleryData3 %>%
+  filter(Location == "On-Campus Property") %>% 
+  tabyl(Type, Year) %>% 
+  adorn_totals(where = c("row", "col")) %>% 
+  adorn_title(
+    placement = "combined",
+    row_name = "Type",
+    col_name = "Year"
+  )
+
+cleryTable2017 %>% 
+  kable(
+    caption = "On-Campus UP Property Sexual Offences"
+  ) %>% 
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped"),
+    font_size = 14
+  )
+```
+
+```{r UPCampusOff}
+CleryData3 <- read_excel("~/CleryData3.xlsx")
+
+cleryTableOffUP <- CleryData3 %>%
+  filter(Location == "Non Campus") %>% 
+  tabyl(Type, Year) %>% 
+  adorn_totals(where = c("row", "col")) %>% 
+  adorn_title(
+    placement = "combined",
+    row_name = "Type",
+    col_name = "Year"
+  )
+
+cleryTableOffUP %>% 
+  kable(
+    caption = "Off UP Campus Sexual Offences"
+  ) %>% 
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped"),
+    font_size = 14
+  )
+```
+
+
 # Synthesis
 Insert synthesis here.
 
