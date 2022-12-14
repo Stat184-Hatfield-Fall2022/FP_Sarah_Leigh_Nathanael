@@ -2,86 +2,35 @@
 title: "Sexual Offenses and Alcohol Abuse at Pennsylvania State University Campuses"
 author: "Sarah Kircher, Leigh Stern, and Nathanael Kovscek"
 date: "`r Sys.Date()`"
-output: html_notebook
+output: 
+  html_document:
+    code_folding: "hide"
 ---
 
-```{r setUp}
+```{r setUp, echo=FALSE, include=FALSE}
 # Load needed packages
 library(ggplot2)
 library(readxl)
 library(dplyr)
 library(tidyverse)
 library(reshape2)
+library(janitor)
+library(knitr)
+library(readxl)
+
 ```
 
 # Introduction
 
 Sexual assault and drinking are often thought of as being connected. Put in another way, where there is more alcohol, there is more assault. We wish to explore this established pattern and see if it exists here at Penn State. <br> <br>
-In this document, we gathered data from Penn State Pulse surveys and Clery Act releases to explore the relationship between alcohol use and sexual assault in our community. In addition, we explore how University Park compares to the aggregation of the top three branch campuses: Abington, Erie, and Harrisburg.
+In this document, we gathered data from Penn State Pulse surveys and Clery Act releases to explore the relationship between alcohol use and sexual assault in our community. In addition, we explore how University Park compares to the aggregation of the top three branch campuses: Abington, Erie, and Harrisburg. What follows are some questions we are trying to answer:
 
-# Population Analysis
+1. How has the number of Penn State students who report consuming any alcohol changed over time?
+2. How does high-risk drinking of Penn State students vary over time by sex?
+3. How do the effects of alcohol impact Penn State student experiences with sexual assault over time?
+4. How do sexual assault trends differ at branch campus from main campus?
 
-Before we take a look at the survey results about drinking and the Clery data, we find it prudent to first get an overview of the entire Penn State population. To do this, we've taken data releases from Penn State's Data Digest initiative. Specifically, we look at the enrollment data that is provided. After applying some initial filters available on the website, we downloaded the data into a csv file. This data was not in a tidy format so part of the process was wrangling it into a good format. One thing to note here is that, all students - including graduate and law students - are included in the graphs that follow.
-
-```{r Data_Wrangling, echo=TRUE}
-
-# Load in the data
-enrollment_data <- read.csv('~/Documents/psu_enrollments.csv')
-
-# Change column name
-enrollment_data <- rename(enrollment_data, FallYear = Fall.Term)
-
-# Filter by campuses - only the ones we are interested in
-campuses <- list('Abington', 'Erie', 'Harrisburg', 'University Park')
-enrollment_data <- subset(enrollment_data, Campus %in% campuses)
-
-# Group by academic standing and year to aggregate all students (undergrad, grad, law)
-enrollment_data <- enrollment_data %>% 
-  group_by(Campus, FallYear) %>% 
-  summarise(total_enroll = sum(Enrollment.Count))
-
-# Make the Term column the rows instead (a time series table)
-enrollment_data <- dcast(enrollment_data, FallYear~Campus)
-
-```
-
-
-## University Park Enrollment
-
-```{r up_enrollment, echo=TRUE}
-
-UP_enroll <- ggplot(enrollment_data, aes(FallYear, UniversityPark)) + 
-  geom_line()
-UP_enroll
-
-```
-
-In the last five years...
-
-## Branch Campus Enrollment
-
-```{r top3_enrollment_seperate, echo=TRUE}
-# Each Branch Campus Individually
-top3_enroll <- ggplot(enrollment_data, aes(FallYear)) + 
-  geom_line(aes(y = Abington, color = 'red')) +
-  geom_line(aes(y = Erie), color = 'green') +
-  geom_line(aes(y = Harrisburg, color = 'blue'))
-top3_enroll
-```
-
-```{r top3_enrollment_total}
-# Total enrollments
-top3 <- select(enrollment_data, -UniversityPark)
-top3$branch_enrollment <- rowSums(top3[,c(-1)])
-
-top3_agg_enroll <- ggplot(top3, aes(FallYear, branch_enrollment)) + 
-  geom_line()
-top3_agg_enroll
-```
-
-In the last five years...
-
-# University Park Cases
+# Data Background
 
 ## Penn State PULSE Survey
 Alcohol consumption, high-risk drinking, and the consequences related to drinking behaviors at Penn State are major problems that need to be addressed to maintain the safety and security of students on and off campus. In order to get an accurate representation of alcohol consumption and other related data from Penn State students, we chose to investigate public data released from the Penn State PULSE survey. 
@@ -99,19 +48,144 @@ Before visualizing the data, it was necessary to observe the structure of the da
 
 In addition to this, we discovered that Penn State’s reports of this drinking data are misleading. For the alcohol consumption and high-risk drinking behaviors by sex data sets, the data is structured with time increasing from left to right, since the percentages decrease over time. We believed that this structure would have continued throughout the Drinking PULSE Survey report, but this is not the case. For the consequences of drinking behaviors data, the percentages in most categories increase over time, so the data is arranged from the most recent collection (2019) to the oldest collection (2010), which makes the data appear to be decreasing over time rather than increasing. Because of the inconsistencies between the data sets, Penn State’s report of the Drinking PULSE survey data is misleading.
 
-```{r alcData}
-# Load dataset 1 from Excel - PSU student alcohol consumptions
-alcohol_consumption <- read_excel("PSU_students_report_consuming_alc.xlsx")
+# Population Analysis
 
-# Load dataset 2 from Excel - PSU student high risk drinking by sex
-hr_drinking_sex <- read_excel("PSU_high_risk_drinking_sex.xlsx")
+Before we take a look at the survey results about drinking and the crime reports from Clery data, we find it prudent to first present an overview of enrollment Penn State. This will serve as a baseline to understanding the other data we will present. <br> <br>
+To do this, we've taken data releases from Penn State's Data Digest initiative. Specifically, we look at the enrollment data that is provided. After applying some initial filters available on the website, we downloaded the data into a csv file. This data was not in a tidy format so part of the process was wrangling it into a good format. One thing to note here is that, all students - including graduate and law students - are included in the graphs that follow.
 
-# Load dataset 3 from Excel - PSU student drinking consequences
-drinking_consequences <- read_excel("PSU_drinking_consequences.xlsx")
+```{r Data_Wrangling, echo=TRUE, include=FALSE}
+
+# Load in the data
+enrollment_data <- read.csv('~/Documents/GitHub/FP_Sarah_Leigh_Nathanael/data/psu_enrollments.csv')
+
+# Change column name
+enrollment_data <- rename(enrollment_data, FallYear = Fall.Term)
+
+# Filter by campuses - only the ones we are interested in
+campuses <- list('Abington', 'Erie', 'Harrisburg', 'University Park')
+enrollment_data <- subset(enrollment_data, Campus %in% campuses)
+
+# Group by academic standing and year to aggregate all students (undergrad, grad, law)
+enrollment_data <- enrollment_data %>% 
+  group_by(Campus, FallYear) %>% 
+  summarise(total_enroll = sum(Enrollment.Count))
+
+# Make the Term column the rows instead (a time series table)
+enrollment_data <- dcast(enrollment_data, FallYear~Campus)
+enrollment_data <- rename(enrollment_data, UniversityPark = "University Park")
+
 ```
 
-### How has the number of Penn State students who report consuming any alcohol changed over time?
-```{r alcoholConsumption}
+
+## University Park Enrollment
+
+```{r up_enrollment, echo=TRUE, fig.align='center'}
+# Create the visualization
+UP_enroll <- ggplot(enrollment_data, aes(FallYear, UniversityPark)) + 
+  geom_line(size = 1) + geom_point(size = 2.25) +
+  
+  # Add updated labels
+  labs(title = "Enrollment at University Park",
+       y = "Enrollment",
+       x = "Year (Fall Term)") +
+  
+  # Change the sizes of the labels
+  theme(title = element_text(size = 16),
+        axis.title = element_text(size = 14)) +
+  
+  theme_minimal()
+
+UP_enroll
+
+```
+
+In the last five years, the University Park campus has seen an increase in the number of students enrolled at the university. Between 2018 and 2022, there is an approximately 2000 student difference in size. <br>
+
+Additionally, we see that in 2020, there was a rather steep drop in the number of students who were enrolled. It seems reasonable to attribute this to the COVID pandemic and that the enrollment recovery was quite good.
+
+## Branch Campus Enrollment
+
+```{r top3_enrollment_seperate, echo=TRUE, message=FALSE, fig.align='center'}
+# Colors for Campus lines
+campus_colors <- c("Abington" = "goldenrod3", 
+                                 "Erie" = "deepskyblue4",
+                                 "Harrisburg" = "darkseagreen4")
+# Each Branch Campus Individually
+top3_enroll <- ggplot(enrollment_data, aes(FallYear)) + 
+  
+  # Add the marks to the visualization
+  geom_line(aes(y = Abington, color = 'Abington'), size = 1) +
+  geom_line(aes(y = Erie, color = 'Erie'), size = 1) +
+  geom_line(aes(y = Harrisburg, color = 'Harrisburg'), size = 1) +
+  geom_point(aes(y = Abington, color = 'Abington'), size = 2.25) +
+  geom_point(aes(y = Erie, color = 'Erie'), size = 2.25) +
+  geom_point(aes(y = Harrisburg, color = 'Harrisburg'), size = 2.25) +
+  
+  # Add custom color scale for the campus color lines
+  scale_color_manual(values = campus_colors) +
+  
+  # Adding titles and new labels
+  labs(title = "Enrollment at Branch Campuses",
+       subtitle = "Campuses: Harrisburg, Erie, Abington",
+       x = "Year (Fall Term)",
+       y = "Enrollment",
+       color = "Campus") +
+  
+  # Updating font sizes and line colors
+  theme(axis.title = element_text(size = 14),
+        title = element_text(size = 16)) +
+  
+  theme_minimal()
+
+top3_enroll
+```
+
+```{r top3_enrollment_total, echo=TRUE, fig.align='center'}
+# Filtering the table to only include the sum of each branch campus by year
+top3 <- select(enrollment_data, -UniversityPark)
+top3$branch_enrollment <- rowSums(top3[,c(-1)])
+
+# Create the visualization
+top3_agg_enroll <- ggplot(top3, aes(FallYear, branch_enrollment)) + 
+  geom_line(size = 1) + 
+  geom_point(size = 2.25) +
+  
+  # Add updated titles
+  labs(title = "Enrollment Aggregated by Campus",
+       subtitle = "Campuses: Harrisburg, Erie, Abington",
+       x = "Year (Fall Term)",
+       y = "Enrollment") +
+
+  # Update font sizes
+  theme(title = element_text(size = 16),
+    axis.title = element_text(size = 14)) +
+  
+  theme_minimal()
+  
+top3_agg_enroll
+```
+The branch campuses that we are observing will be the campuses at Harrisburg, Erie, and Abington. We've chosen these branches because they are the three largest branch campuses of Penn State. <br> <br>
+
+In the past five years, branch campuses have seen a decrease in their enrollment. This is not solely due to the pandemic as some might think, but rather, seems to have been a trend that had already started by 2018. <br> <br>
+
+With these trends now observed, we will start our look into the Penn State Pulse Data.
+
+# University Park Cases
+
+```{r alcData}
+# Load dataset 1 from Excel - PSU student alcohol consumptions
+alcohol_consumption <- read_excel("~/Documents/GitHub/FP_Sarah_Leigh_Nathanael/data/PSU_students_report_consuming_alc.xlsx")
+
+# Load dataset 2 from Excel - PSU student high risk drinking by sex
+hr_drinking_sex <- read_excel("~/Documents/GitHub/FP_Sarah_Leigh_Nathanael/data/PSU_high_risk_drinking_sex.xlsx")
+
+# Load dataset 3 from Excel - PSU student drinking consequences
+drinking_consequences <- read_excel("~/Documents/GitHub/FP_Sarah_Leigh_Nathanael/data/PSU_drinking_consequences.xlsx")
+```
+
+## How has the number of Penn State students who report consuming any alcohol changed over time?
+
+```{r alcoholConsumption, fig.align='center'}
 # Create ggplot2 line graph for PSU student alcohol consumption over time
 # One line/trend for respondents who do drink - red
 # One line/trend for respondents who do not drink - gray
@@ -136,14 +210,16 @@ ggplot(
   theme_minimal()
 
 ```
+
 This plot addresses the question "how has the number of Penn State students who report consuming any alcohol changed over time?" The x-axis represents the year, and the y-axis represents the number of survey respondents. The red line represents students who reported alcohol consumption in the given year, and the gray line represents students who reported no alcohol consumption in the given year. The points on the lines represent the Drinking PULSE survey collections. The inconsistency of the administration of the drinking PULSE survey can be seen by the variety of spread of data points along each line. 
 
 Clearly, the number of respondents who report consuming alcohol is consistently larger than the number of respondents who report not consuming alcohol from 2002 to 2019. It is interesting to observe the trend of respondents who report consuming alcohol over time. There is a clear decrease in respondents who report alcohol consumption from 2010 to 2017. In 2010, about 1600 respondents report consuming alcohol, and in 2017, about 550 respondents report consuming alcohol. Then, in 2019, about 1100 respondents report consuming alcohol. What could have caused this large decrease from 2010-2017 and then immediate increase from 2017-2019? 
 
 While the drinker trend line really changes over time from 2002 to 2019, the non-drinker trend line only fluctuates between about 300 and 400 respondents, which is between 15 and 24 percent of each group of respondents.
 
-### How does high-risk drinking of Penn State students vary over time by sex?
-```{r highriskDrinking}
+## How does high-risk drinking of Penn State students vary over time by sex?
+
+```{r highriskDrinking, fig.align='center'}
 # Creates grouped bar chart for PSU high-risk drinking by sex over time
 # A pair of bars for each survey collection year
 # Blue bars for male respondents
@@ -170,8 +246,9 @@ This plot addresses the question "How does high-risk drinking of Penn State stud
 
 According to the National Institute on Alcohol Abuse and Alcoholism (NIAAA), high-risk drinking is defined as 14 drinks per week for men and 7 drinks per week for women. Looking at the bar chart, a greater number of men reported high-risk drinking compared to women in most survey collections from 2002 to 2019. In 2002, 2017, and 2019, a greater number of women reported high-risk drinking compared to men. Even though the number of respondents are different, the overall trend of the bar chart matches the trend of the red drinker status line from the previous time series graph on alcohol consumption. It is interesting to note the most recent change in high-risk drinking rates for women. In 2019, the number of women who report high-risk drinking is more than two times the number of men who report high-risk drinking. What could have caused this drastic increase in high-risk drinking rates for the female sex?
 
-### How do the effects of alcohol impact Penn State student experiences with sexual assault over time?
-```{r drinkingConsequences}
+## How do the effects of alcohol impact Penn State student experiences with sexual assault over time?
+
+```{r drinkingConsequences, fig.align='center'}
 # Create ggplot2 line graph for drinking consequences over time - sexual assault
 # Green line for "Had sex when you didn’t really want to"
 # Purple line for "Been pressured or forced to have sex with someone and were too drunk to prevent it"
@@ -216,23 +293,12 @@ This data was pulled from Clery statistics published yearly by Penn State.The go
 
 The data has been grouped by report type and year, with each table representing events that either happened on or off campus properties. Please note that there were no reported fondling incidents for any of the years at any of the branch campuses, so there is no table for that data. 
 
-```{r packageSetup, include = TRUE, echo=TRUE}
-#Calling all packages needed to create tables of our data
-
-library(dplyr)
-library(janitor)
-library(knitr)
-library(readxl)
-
-```
 
 ```{r UPCampusOn, echo = TRUE}
+CleryData3 <- read_excel("~/Documents/GitHub/FP_Sarah_Leigh_Nathanael/data/CleryData3.xlsx")
 #Loading the data we have pulled from Penn State's campus Clery reports. This particular Excel summarizes the data from all On- and Off-Campus rape and fondling incidences reported from 2017-2021 at University Park.
 
 #Creating a table of all On-Campus sexual assault incidences from 2017-2021 and finding the totals for each type of incidence and the years. 
-
-CleryData3 <- read_excel("~/CleryData3.xlsx")
-
 cleryTable2017 <- CleryData3 %>%
   filter(Location == "On-Campus Property") %>% 
   tabyl(Type, Year) %>% 
@@ -259,11 +325,9 @@ cleryTable2017 %>%
 
 ```{r UPCampusOff}
 #Loading the data we have pulled from Penn State's campus Clery reports. This particular Excel summarizes the data from all On- and Off-Campus rape and fondling incidences reported from 2017-2021 at University Park.
-
-CleryData3 <- read_excel("~/CleryData3.xlsx")
+CleryData3 <- read_excel("~/Documents/GitHub/FP_Sarah_Leigh_Nathanael/data/CleryData3.xlsx")
 
 #Creating a table of all Off-Campus sexual assault incidences from 2017-2021 and finding the totals for each type of incidence and the years.
-
 cleryTableOffUP <- CleryData3 %>%
   filter(Location == "Non Campus") %>% 
   tabyl(Type, Year) %>% 
@@ -288,11 +352,9 @@ cleryTableOffUP %>%
   kableExtra::row_spec(1:3, color = "black")
 ```
 ```{r branchCampusOn, echo = TRUE}
+CleryDataOtherCampuses <- read_excel("~/Documents/GitHub/FP_Sarah_Leigh_Nathanael/data/CleryDataOtherCampuses.xlsx")
 #Loading the data we have pulled from Penn State's campus Clery reports. This particular Excel summarizes the data from all On- and Off-Campus rape and fondling incidences reported from 2017-2021 at the Abington, Erie, and Harrisburg campuses. 
-
 #Incidences at all of these campuses are aggregated per year.
-
-CleryDataOtherCampuses <- read_excel("~/CleryDataOtherCampuses.xlsx")
 
 #Creating a table of all Off-Campus sexual assault incidences from 2017-2021 and finding the totals for each type of incidence and the years.
 
@@ -325,11 +387,11 @@ For example, in comparing the two tables related University Park, it becomes abu
 
 It is also worth paying attention to the comparatively low numbers of sexual assault incidences on branch campuses. Because these values are so small, the team decided to aggregate the data from Penn State's three largest branch campuses: Abington, Erie, and Harrisburg. Even put together as they are, the frequency of these incidences does not compare with the number of reports for either on- or off-campus at University Park. 
 
-# Synthesis
-Insert synthesis here.
-
 # Conclusion
-Insert conclusion here.
+
+Having presented our exploratory data analysis, we can see that, when a greater percentage of PULSE poll respondents said they consumed alcohol in the given time period, there was a greater number of reported sexual assaults. This, purportedly affirms the established connection between alcohol and assault that was originally postulated. <br> <br>
+
+However, just because those two things are correlated, that does not imply that it was merely more people drinking that was the problem. An additional explanation for this pattern is that there were more students enrolled at the times in which sexual assault was reported more. This is particularly evident in the data tables. When there is an increase in the enrollment body at University Park, there is an increase in the number of reported sexual assaults. It's not perfectly true, but the pattern does exist and thus is likely part of the explanation for what variables affect the rate of sexual assault at Penn State.
 
 
 
