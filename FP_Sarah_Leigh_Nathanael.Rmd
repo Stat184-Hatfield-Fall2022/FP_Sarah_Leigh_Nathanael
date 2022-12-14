@@ -351,7 +351,9 @@ cleryTableOffUP %>%
   kableExtra::column_spec(1:6, color = "black") %>% 
   kableExtra::row_spec(1:3, color = "black")
 ```
+
 ```{r branchCampusOn, echo = TRUE}
+
 CleryDataOtherCampuses <- read_excel("~/Documents/GitHub/FP_Sarah_Leigh_Nathanael/data/CleryDataOtherCampuses.xlsx")
 #Loading the data we have pulled from Penn State's campus Clery reports. This particular Excel summarizes the data from all On- and Off-Campus rape and fondling incidences reported from 2017-2021 at the Abington, Erie, and Harrisburg campuses. 
 #Incidences at all of these campuses are aggregated per year.
@@ -378,7 +380,7 @@ cleryTableBranchOn %>%
     bootstrap_options = c("striped"),
     font_size = 14
   ) %>% 
-  kableExtra::column_spec(1:6, color = "black") %>% 
+  kableExtra::column_spec(1:5, color = "black") %>% 
   kableExtra::row_spec(1:3, color = "black")
 ```
 Each of these tables show the trends of sexual assaults over time as well as well as highlighting the differences between the rate at which these incidents occur on- and off-campus. 
