@@ -6,7 +6,8 @@ output: html_notebook
 ---
 
 # Introduction
-Insert introduction here.
+
+This is a paper that aims to look at how sexual assault is correlated with drinking at Penn State Universities. In this process, we will be looking at the following sources of data: Clery, Pulse, and DataDigest.
 
 ```{r setUp}
 # Load needed packages
