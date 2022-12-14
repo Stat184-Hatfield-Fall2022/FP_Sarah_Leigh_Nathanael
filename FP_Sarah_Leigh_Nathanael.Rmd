@@ -287,12 +287,18 @@ This plot addresses the question "how do the effects of alcohol impact Penn Stat
 
 There is a slight increase in the percentage of respondents (from three to five percent) that were drunk and pressured into having sex from 2010 to 2019. There is fluctuation in the percentage of respondents (between one and two percent) that were pressured into having sex after drinking between 2010 and 2019. The percentage of respondents that sex when they did not want to is significantly larger compared to the other two drinking consequences. In addition to this, from 2013 to 2019, the percentage of respondents in this category of had sex when they did not want to continues to increase. With alcohol consumption of Penn State students increasing since 2019, could both of these increases be related?
 
-# Branch Campus Cases
+# Campus Sexual Assault Cases
+
+This data was pulled from Clery statistics published yearly by Penn State.The goal was to better understand the incidence of sexual assaults (i.e. rape and fondling reports) on the University Park campus as compared to the aggregated data for Penn State's largest branch campuses (Abington, Erie, and Harrisburg). 
+
+The data has been grouped by report type and year, with each table representing events that either happened on or off campus properties. Please note that there were no reported fondling incidents for any of the years at any of the branch campuses, so there is no table for that data. 
 
 
 ```{r UPCampusOn, echo = TRUE}
 CleryData3 <- read_excel("~/Documents/GitHub/FP_Sarah_Leigh_Nathanael/data/CleryData3.xlsx")
+#Loading the data we have pulled from Penn State's campus Clery reports. This particular Excel summarizes the data from all On- and Off-Campus rape and fondling incidences reported from 2017-2021 at University Park.
 
+#Creating a table of all On-Campus sexual assault incidences from 2017-2021 and finding the totals for each type of incidence and the years. 
 cleryTable2017 <- CleryData3 %>%
   filter(Location == "On-Campus Property") %>% 
   tabyl(Type, Year) %>% 
@@ -303,6 +309,8 @@ cleryTable2017 <- CleryData3 %>%
     col_name = "Year"
   )
 
+#Cleaning the table
+
 cleryTable2017 %>% 
   kable(
     caption = "On-Campus UP Property Sexual Offences"
@@ -310,12 +318,16 @@ cleryTable2017 %>%
   kableExtra::kable_styling(
     bootstrap_options = c("striped"),
     font_size = 14
-  )
+  ) %>% 
+  kableExtra::column_spec(1:6, color = "black") %>% 
+  kableExtra::row_spec(1:3, color = "black")
 ```
 
 ```{r UPCampusOff}
+#Loading the data we have pulled from Penn State's campus Clery reports. This particular Excel summarizes the data from all On- and Off-Campus rape and fondling incidences reported from 2017-2021 at University Park.
 CleryData3 <- read_excel("~/Documents/GitHub/FP_Sarah_Leigh_Nathanael/data/CleryData3.xlsx")
 
+#Creating a table of all Off-Campus sexual assault incidences from 2017-2021 and finding the totals for each type of incidence and the years.
 cleryTableOffUP <- CleryData3 %>%
   filter(Location == "Non Campus") %>% 
   tabyl(Type, Year) %>% 
@@ -326,6 +338,8 @@ cleryTableOffUP <- CleryData3 %>%
     col_name = "Year"
   )
 
+#Cleaning the table
+
 cleryTableOffUP %>% 
   kable(
     caption = "Off UP Campus Sexual Offences"
@@ -333,10 +347,16 @@ cleryTableOffUP %>%
   kableExtra::kable_styling(
     bootstrap_options = c("striped"),
     font_size = 14
-  )
+  ) %>% 
+  kableExtra::column_spec(1:6, color = "black") %>% 
+  kableExtra::row_spec(1:3, color = "black")
 ```
 ```{r branchCampusOn, echo = TRUE}
 CleryDataOtherCampuses <- read_excel("~/Documents/GitHub/FP_Sarah_Leigh_Nathanael/data/CleryDataOtherCampuses.xlsx")
+#Loading the data we have pulled from Penn State's campus Clery reports. This particular Excel summarizes the data from all On- and Off-Campus rape and fondling incidences reported from 2017-2021 at the Abington, Erie, and Harrisburg campuses. 
+#Incidences at all of these campuses are aggregated per year.
+
+#Creating a table of all Off-Campus sexual assault incidences from 2017-2021 and finding the totals for each type of incidence and the years.
 
 cleryTableBranchOn <- CleryDataOtherCampuses %>%
   filter(Location == "On-Campus Property") %>% 
@@ -347,6 +367,8 @@ cleryTableBranchOn <- CleryDataOtherCampuses %>%
     row_name = "Type",
     col_name = "Year"
   )
+  
+#Cleaning the table
 
 cleryTableBranchOn %>% 
   kable(
@@ -355,9 +377,15 @@ cleryTableBranchOn %>%
   kableExtra::kable_styling(
     bootstrap_options = c("striped"),
     font_size = 14
-  )
+  ) %>% 
+  kableExtra::column_spec(1:6, color = "black") %>% 
+  kableExtra::row_spec(1:3, color = "black")
 ```
+Each of these tables show the trends of sexual assaults over time as well as well as highlighting the differences between the rate at which these incidents occur on- and off-campus. 
 
+For example, in comparing the two tables related University Park, it becomes abundantly clear that the number of sexual assault incidents is significantly lower off-campus. This trend suggests most environments where these events occur tend to be on-campus, likely in areas such as dorm halls. The one outlier from that data set appears to be in the year 2019, when the number of sexual assault incidents jumped to 48 -- significantly higher than in any of the years before or after that. 
+
+It is also worth paying attention to the comparatively low numbers of sexual assault incidences on branch campuses. Because these values are so small, the team decided to aggregate the data from Penn State's three largest branch campuses: Abington, Erie, and Harrisburg. Even put together as they are, the frequency of these incidences does not compare with the number of reports for either on- or off-campus at University Park. 
 
 # Conclusion
 
