@@ -49,9 +49,9 @@ drinking_consequences <- read_excel("PSU_drinking_consequences.xlsx")
 
 ### How has the number of Penn State students who report consuming any alcohol changed over time?
 ```{r alcoholConsumption}
-# Create ggplot2 for PSU student alcohol consumption over time
-# One line/trend for respondents who do drink
-# One line/trend for respondents who do not drink
+# Create ggplot2 line graph for PSU student alcohol consumption over time
+# One line/trend for respondents who do drink - red
+# One line/trend for respondents who do not drink - gray
 alc_consump_colors <- c("Drinker" = "red", "Non-Drinker" = "gray")
 
 ggplot(
@@ -77,9 +77,10 @@ While the drinker trend line really changes over time from 2002 to 2019, the non
 
 ### How does high-risk drinking of Penn State students vary over time by sex?
 ```{r highriskDrinking}
-# Creates grouped bar chart for PSU high risk drinking by sex over time
-# One color bar (blue) for male respondents
-# One color bar (pink) for female respondents
+# Creates grouped bar chart for PSU high-risk drinking by sex over time
+# A pair of bars for each survey collection year
+# Blue bars for male respondents
+# Pink bars for female respondents
 ggplot(
   data = hr_drinking_sex, 
   aes(x = year,
@@ -99,10 +100,10 @@ According to the National Institute on Alcohol Abuse and Alcoholism (NIAAA), hig
 
 ### How do the effects of alcohol impact Penn State student experiences with sexual assault over time?
 ```{r drinkingConsequences}
-# Create ggplot2 for drinking consequences over time
-# One line for "Had sex when you didn’t really want to"
-# One line for "Been pressured or forced to have sex with someone and were too drunk to prevent it"
-# One line for "Pressured or forced someone to have sex with you after you had been drinking"
+# Create ggplot2 line graph for drinking consequences over time - sexual assault
+# Green line for "Had sex when you didn’t really want to"
+# Purple line for "Been pressured or forced to have sex with someone and were too drunk to prevent it"
+# Orange line for "Pressured or forced someone to have sex with you after you had been drinking"
 consequence_colors <- c("did not want to" = "dark green", 
                                  "were pressured when too drunk" = "purple",
                                  "were pressured after drinking" = "orange")
