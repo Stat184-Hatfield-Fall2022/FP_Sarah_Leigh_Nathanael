@@ -213,6 +213,9 @@ There is a slight increase in the percentage of respondents (from three to five 
 # Branch Campus Cases
 Insert table and branch campus information here.
 
+This data was pulled from Clery statistics published yearly by Penn State.The goal was to better understand the incidence of sexual assaults (i.e. rape and fondling reports) on the University Park campus as compared to the aggregated data for Penn State's largest branch campuses (Abington, Erie, and Harrisburg). 
+
+The data has been grouped by report type and year, with each table representing events that either happened on or off campus properties. Please note that there were no reported fondling incidents for any of the years at any of the branch campuses, so there is no table for that data. 
 
 ```{r packageSetup, include = TRUE, echo=TRUE}
 #Calling all packages needed to create tables of our data
@@ -225,6 +228,10 @@ library(readxl)
 ```
 
 ```{r UPCampusOn, echo = TRUE}
+#Loading the data we have pulled from Penn State's campus Clery reports. This particular Excel summarizes the data from all On- and Off-Campus rape and fondling incidences reported from 2017-2021 at University Park.
+
+#Creating a table of all On-Campus sexual assault incidences from 2017-2021 and finding the totals for each type of incidence and the years. 
+
 CleryData3 <- read_excel("~/CleryData3.xlsx")
 
 cleryTable2017 <- CleryData3 %>%
@@ -237,6 +244,8 @@ cleryTable2017 <- CleryData3 %>%
     col_name = "Year"
   )
 
+#Cleaning the table
+
 cleryTable2017 %>% 
   kable(
     caption = "On-Campus UP Property Sexual Offences"
@@ -248,7 +257,11 @@ cleryTable2017 %>%
 ```
 
 ```{r UPCampusOff}
+#Loading the data we have pulled from Penn State's campus Clery reports. This particular Excel summarizes the data from all On- and Off-Campus rape and fondling incidences reported from 2017-2021 at University Park.
+
 CleryData3 <- read_excel("~/CleryData3.xlsx")
+
+#Creating a table of all Off-Campus sexual assault incidences from 2017-2021 and finding the totals for each type of incidence and the years.
 
 cleryTableOffUP <- CleryData3 %>%
   filter(Location == "Non Campus") %>% 
@@ -260,6 +273,8 @@ cleryTableOffUP <- CleryData3 %>%
     col_name = "Year"
   )
 
+#Cleaning the table
+
 cleryTableOffUP %>% 
   kable(
     caption = "Off UP Campus Sexual Offences"
@@ -270,7 +285,13 @@ cleryTableOffUP %>%
   )
 ```
 ```{r branchCampusOn, echo = TRUE}
+#Loading the data we have pulled from Penn State's campus Clery reports. This particular Excel summarizes the data from all On- and Off-Campus rape and fondling incidences reported from 2017-2021 at the Abington, Erie, and Harrisburg campuses. 
+
+#Incidences at all of these campuses are aggregated per year.
+
 CleryDataOtherCampuses <- read_excel("~/CleryDataOtherCampuses.xlsx")
+
+#Creating a table of all Off-Campus sexual assault incidences from 2017-2021 and finding the totals for each type of incidence and the years.
 
 cleryTableBranchOn <- CleryDataOtherCampuses %>%
   filter(Location == "On-Campus Property") %>% 
@@ -281,6 +302,8 @@ cleryTableBranchOn <- CleryDataOtherCampuses %>%
     row_name = "Type",
     col_name = "Year"
   )
+  
+#Cleaning the table
 
 cleryTableBranchOn %>% 
   kable(
