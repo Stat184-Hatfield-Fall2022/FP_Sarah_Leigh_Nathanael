@@ -121,11 +121,15 @@ ggplot(
   data = alcohol_consumption, 
   aes(x = year)
 ) + 
+# Create points on each line
   geom_point(aes(y = drink_num, color = "Drinker"), size = 2.25) +
   geom_point(aes(y = not_drink_num, color = "Non-Drinker"), size = 2.25) +
   
+ # Create one line for each drinker status
   geom_line(aes(y = drink_num, color = "Drinker"), size = 1) + 
   geom_line(aes(y = not_drink_num, color = "Non-Drinker"), size = 1) +
+  
+  # Add axis labels, title, and colors
   labs(x = "Year", y = "Respondents", color = "Drinker Status") +
   ggtitle("Penn State Student Alcohol Consumption Over Time") +
   scale_color_manual(values = alc_consump_colors) +
@@ -144,14 +148,19 @@ While the drinker trend line really changes over time from 2002 to 2019, the non
 # A pair of bars for each survey collection year
 # Blue bars for male respondents
 # Pink bars for female respondents
+
 ggplot(
   data = hr_drinking_sex, 
   aes(x = year,
       y = frequency,
       fill = sex)) +
+      
+ # Set the position of the bars
   geom_bar(stat = "identity", position = 'dodge') +
-  ggtitle("Penn State Student High Risk Drinking By Sex Over Time") +
+  
+ # Add a title, axis labels, and colors
   labs(x = "Year", y = "Respondents", fill = "Sex") +
+  ggtitle("Penn State Student High Risk Drinking By Sex Over Time") +
   scale_fill_manual(values = c("pink", "blue")) +
   theme_minimal()
 
@@ -174,16 +183,23 @@ ggplot(
   data = drinking_consequences, 
   aes(x = year)
 ) + 
+
+# Create points on each line
   geom_point(aes(y = sex_did_not_want, color = "did not want to"), size = 2.25) +
   geom_point(aes(y = pressured_forced_drunk, color = "were pressured when too drunk"), size = 2.25) +
   geom_point(aes(y = pressured_forced_after_drinking, color = "were pressured after drinking"), size = 2.25) +
   
+# Create three lines - one for each sexual assault consequence
   geom_line(aes(y = sex_did_not_want, color = "did not want to"), size = 1) + 
   geom_line(aes(y = pressured_forced_drunk, color = "were pressured when too drunk"), size = 1) +
   geom_line(aes(y = pressured_forced_after_drinking, color = "were pressured after drinking"), size = 1) +
+  
+# Add axis labels, title, and colors
   labs(x = "Year", y = "Percentage of Respondents", color = "Respondent had sex when they...") +
   ggtitle("Penn State Student Drinking Consequence Responses Over Time") +
   scale_color_manual(values = consequence_colors) +
+  
+# Add percent signs to y-axis labels and set manual breaks in x-axis
   scale_y_continuous(labels = scales::percent) +
   scale_x_continuous(breaks = c(2010, 2012, 2014, 2016, 2018, 2020)) +
   theme_minimal()
@@ -196,6 +212,86 @@ There is a slight increase in the percentage of respondents (from three to five 
 
 # Branch Campus Cases
 Insert table and branch campus information here.
+
+
+```{r packageSetup, include = TRUE, echo=TRUE}
+#Calling all packages needed to create tables of our data
+
+library(dplyr)
+library(janitor)
+library(knitr)
+library(readxl)
+
+```
+
+```{r UPCampusOn, echo = TRUE}
+CleryData3 <- read_excel("~/CleryData3.xlsx")
+
+cleryTable2017 <- CleryData3 %>%
+  filter(Location == "On-Campus Property") %>% 
+  tabyl(Type, Year) %>% 
+  adorn_totals(where = c("row", "col")) %>% 
+  adorn_title(
+    placement = "combined",
+    row_name = "Type",
+    col_name = "Year"
+  )
+
+cleryTable2017 %>% 
+  kable(
+    caption = "On-Campus UP Property Sexual Offences"
+  ) %>% 
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped"),
+    font_size = 14
+  )
+```
+
+```{r UPCampusOff}
+CleryData3 <- read_excel("~/CleryData3.xlsx")
+
+cleryTableOffUP <- CleryData3 %>%
+  filter(Location == "Non Campus") %>% 
+  tabyl(Type, Year) %>% 
+  adorn_totals(where = c("row", "col")) %>% 
+  adorn_title(
+    placement = "combined",
+    row_name = "Type",
+    col_name = "Year"
+  )
+
+cleryTableOffUP %>% 
+  kable(
+    caption = "Off UP Campus Sexual Offences"
+  ) %>% 
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped"),
+    font_size = 14
+  )
+```
+```{r branchCampusOn, echo = TRUE}
+CleryDataOtherCampuses <- read_excel("~/CleryDataOtherCampuses.xlsx")
+
+cleryTableBranchOn <- CleryDataOtherCampuses %>%
+  filter(Location == "On-Campus Property") %>% 
+  tabyl(Type, Year) %>% 
+  adorn_totals(where = c("row", "col")) %>% 
+  adorn_title(
+    placement = "combined",
+    row_name = "Type",
+    col_name = "Year"
+  )
+
+cleryTableBranchOn %>% 
+  kable(
+    caption = "Branch Campuses Sexual Offences"
+  ) %>% 
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped"),
+    font_size = 14
+  )
+```
+
 
 # Synthesis
 Insert synthesis here.
