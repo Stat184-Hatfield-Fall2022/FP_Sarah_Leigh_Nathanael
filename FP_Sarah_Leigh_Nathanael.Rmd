@@ -5,19 +5,81 @@ date: "`r Sys.Date()`"
 output: html_notebook
 ---
 
-# Introduction
-
-This is a paper that aims to look at how sexual assault is correlated with drinking at Penn State Universities. In this process, we will be looking at the following sources of data: Clery, Pulse, and DataDigest.
-
 ```{r setUp}
 # Load needed packages
 library(ggplot2)
 library(readxl)
+library(dplyr)
+library(tidyverse)
+library(reshape2)
+```
+
+# Introduction
+
+Sexual assault and drinking are often thought of as being connected. Put in another way, where there is more alcohol, there is more assault. We wish to explore this established pattern and see if it exists here at Penn State. <br> <br>
+In this document, we gathered data from Penn State Pulse surveys and Clery Act releases to explore the relationship between alcohol use and sexual assault in our community. In addition, we explore how University Park compares to the aggregation of the top three branch campuses: Abington, Erie, and Harrisburg.
+
+# Population Analysis
+
+Before we take a look at the survey results about drinking and the Clery data, we find it prudent to first get an overview of the entire Penn State population. To do this, we've taken data releases from Penn State's Data Digest initiative. Specifically, we look at the enrollment data that is provided. After applying some initial filters available on the website, we downloaded the data into a csv file. This data was not in a tidy format so part of the process was wrangling it into a good format. One thing to note here is that, all students - including graduate and law students - are included in the graphs that follow.
+
+```{r Data_Wrangling, echo=TRUE}
+
+# Load in the data
+enrollment_data <- read.csv('~/Documents/psu_enrollments.csv')
+
+# Change column name
+enrollment_data <- rename(enrollment_data, FallYear = Fall.Term)
+
+# Filter by campuses - only the ones we are interested in
+campuses <- list('Abington', 'Erie', 'Harrisburg', 'University Park')
+enrollment_data <- subset(enrollment_data, Campus %in% campuses)
+
+# Group by academic standing and year to aggregate all students (undergrad, grad, law)
+enrollment_data <- enrollment_data %>% 
+  group_by(Campus, FallYear) %>% 
+  summarise(total_enroll = sum(Enrollment.Count))
+
+# Make the Term column the rows instead (a time series table)
+enrollment_data <- dcast(enrollment_data, FallYear~Campus)
 
 ```
 
-# Population Analysis
-Insert population plots and analysis here.
+
+## University Park Enrollment
+
+```{r up_enrollment, echo=TRUE}
+
+UP_enroll <- ggplot(enrollment_data, aes(FallYear, UniversityPark)) + 
+  geom_line()
+UP_enroll
+
+```
+
+In the last five years...
+
+## Branch Campus Enrollment
+
+```{r top3_enrollment_seperate, echo=TRUE}
+# Each Branch Campus Individually
+top3_enroll <- ggplot(enrollment_data, aes(FallYear)) + 
+  geom_line(aes(y = Abington, color = 'red')) +
+  geom_line(aes(y = Erie), color = 'green') +
+  geom_line(aes(y = Harrisburg, color = 'blue'))
+top3_enroll
+```
+
+```{r top3_enrollment_total}
+# Total enrollments
+top3 <- select(enrollment_data, -UniversityPark)
+top3$branch_enrollment <- rowSums(top3[,c(-1)])
+
+top3_agg_enroll <- ggplot(top3, aes(FallYear, branch_enrollment)) + 
+  geom_line()
+top3_agg_enroll
+```
+
+In the last five years...
 
 # University Park Cases
 
